@@ -9,6 +9,9 @@
 </template>
 
 <style lang="scss">
+@import "@/styles/_normalize.scss";
+@import "@/styles/_variables.scss";
+@import "@/styles/style.scss";
 
 #nav {
   padding: 30px;

@@ -1,0 +1,50 @@
+<template>
+  <div class="container--filter" :class="[themeClass, {'disabled': disabled}]" >
+    <h3 class="filter-name">{{ name }}</h3>
+    <div class="filter-range">
+      <input 
+        type="range" 
+        min="0" 
+        max="100" 
+        v-model=rangeValue
+        :style="{backgroundSize: backgroundSize}"
+      >
+    </div>
+    <span class="filter-desp">{{ description }}</span>
+  </div>
+</template>
+
+<script>
+import _ from 'lodash';
+
+export default {
+  name: "ImgFilter",
+  props: {
+    name: String,
+    description: String,
+    defaultRange: Number,
+    changeHandler: Function,
+    themeClass: String,
+    disabled: Boolean
+  },
+  data: function() {
+    return {
+      rangeValue: this.defaultRange
+    };
+  },
+  computed: {
+    backgroundSize: function() {
+      return `${this.rangeValue * 100 / 100}% 100%`;
+    }
+  },
+  watch: {
+    rangeValue: _.debounce(function (val) {
+      this.rangeValue = val;
+      this.changeHandler(val);
+    }, 100),
+    defaultRange: function(newVal) {
+      this.rangeValue = newVal;
+    }
+  }
+}
+</script>
