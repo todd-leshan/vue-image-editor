@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/cutup">Cutup</router-link>
-    </div>
+    </div> -->
     <router-view/>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <style lang="scss">
 @import "@/styles/_normalize.scss";
 @import "@/styles/_variables.scss";
+@import "@/styles/_fonts.scss";
 @import "@/styles/style.scss";
 
 #nav {

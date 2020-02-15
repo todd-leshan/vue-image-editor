@@ -4,7 +4,7 @@
     <div class="container--upload">
       <div class="file-name">
         <span>name</span>
-        <span>a long file name ...</span>
+        <span>{{ imgName }}</span>
       </div>
       <div class="file-upload">
         <label for="file--img">
@@ -33,9 +33,7 @@ export default {
       ctx: null, 
       canvas: null,
       img: null, 
-      canvasWidth: 0,
-      canvasHeight: 0,
-      imageData: null,
+      imgName: '',
       originalImageData: null,
     };
   },
@@ -47,8 +45,6 @@ export default {
   },
   mounted: function() {
     this.canvas = this.$refs.canvas;
-    this.canvasOriginalWidth = this.canvas.scrollWidth;
-    this.canvasOriginalheight = this.canvas.scrollheight;
     this.ctx = this.canvas.getContext("2d");
     this.img = document.createElement("img");
   },
@@ -91,6 +87,7 @@ export default {
 
         vm.img.onload = function() 
         {
+          vm.imgName = `${file.name.substring(0, 15)} ...`;
           vm.canvas.width = vm.img.width;
           vm.canvas.height = vm.img.height; //need to figure out how to calculate canvas height
           vm.ctx.drawImage(vm.img, 0, 0, vm.img.width, vm.img.height);

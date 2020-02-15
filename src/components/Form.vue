@@ -12,7 +12,7 @@
       name='Contrast'
       description='Slide to adjust image contrast! 🌓'
       v-bind:defaultRange='contrast'
-      themeClass='filter--havelock-blue'
+      themeClass='filter--havelock-blue margin--extra'
       :changeHandler='updateContrast'
       :disabled='disableFilter'
     /> 

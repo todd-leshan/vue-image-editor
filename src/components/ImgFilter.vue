@@ -1,5 +1,5 @@
 <template>
-  <div class="container--filter" :class="[themeClass, {'disabled': disabled}]" >
+  <div class="container--filter" :class=themeClass >
     <h3 class="filter-name">{{ name }}</h3>
     <div class="filter-range">
       <input 
@@ -8,6 +8,7 @@
         max="100" 
         v-model=rangeValue
         :style="{backgroundSize: backgroundSize}"
+        :disabled=disabled
       >
     </div>
     <span class="filter-desp">{{ description }}</span>
