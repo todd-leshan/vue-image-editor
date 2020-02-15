@@ -53,8 +53,11 @@ export default {
     this.img = document.createElement("img");
   },
   watch: {
-    contrast: function(newValue) {
-      this.applyFilters(newValue);
+    contrast: function(newContrst) {
+      this.applyFilters(newContrst, this.brightness);
+    },
+    brightness: function(newBrightness) {
+      this.applyFilters(this.contrast, newBrightness);
     }
   },
   methods: {
@@ -67,6 +70,7 @@ export default {
       const input = event.target;
       const file = input.files[0];
       vm.ctx.clearRect(0, 0, vm.canvas.width, vm.canvas.height);
+      vm.updateBrightness(50);
       vm.updateContrast(50);
       vm.updateFilterStatus('disabled');
       vm.originalImageData = null;
@@ -98,7 +102,7 @@ export default {
         }
       }
     },
-    applyFilters(contrast) {
+    applyFilters(contrast, brightness) {
       const vm = this;
       if(vm.originalImageData === null) {
         return;
@@ -107,16 +111,20 @@ export default {
       const data = [...vm.originalImageData];
 
       const contrastScaled = 255 * 2 / 100 * contrast - 255;
+      const brightnessScaled = 255 * 2 / 100 * brightness - 255;
       const factor = (259 * (contrastScaled + 255)) / (255 * (259 - contrastScaled)); 
       for(let i=0;i<data.length;i+=4) {
-        data[i]   = factor * (data[i] - 128) + 128;
-        data[i+1] = factor * (data[i+1] - 128) + 128;
-        data[i+2] = factor * (data[i+2] - 128) + 128;
+        data[i]   = vm.applyFiltersOnPixelColor(data[i], factor, brightnessScaled);
+        data[i+1] = vm.applyFiltersOnPixelColor(data[i+1], factor, brightnessScaled);
+        data[i+2] = vm.applyFiltersOnPixelColor(data[i+2], factor, brightnessScaled);
       }
 
       const newImageData = new ImageData(new Uint8ClampedArray(data), vm.canvas.width, vm.canvas.height);
       vm.ctx.putImageData(newImageData, 0, 0);
     },
+    applyFiltersOnPixelColor(val, contrastFactor, brightness) {
+      return contrastFactor * (val - 128) + 128 + brightness;
+    }
   }
 }
 </script>
