@@ -5,9 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    brightness: 50,
-    contrast: 50,
-    imageData: null
+    brightness: 0,
+    contrast: 0
   },
   getters: {
     brightness(state) {
@@ -15,9 +14,6 @@ export default new Vuex.Store({
     },
     contrast(state) {
       return parseInt(state.contrast);
-    },
-    imageData(state) {
-      return state.imageData;
     }
   },
   mutations: {
@@ -26,9 +22,6 @@ export default new Vuex.Store({
     },
     setContrast(state, payload){
       state.contrast = payload;
-    },
-    setImageData(state, payload){
-      state.imageData = payload;
     }
   },
   actions: {
@@ -37,9 +30,6 @@ export default new Vuex.Store({
     },
     updateContrast(context, payload) {
       context.commit('setContrast', payload);
-    },
-    updateImageData(context, payload) {
-      context.commit('setImageData', payload);
-    },
+    }
   }
 })

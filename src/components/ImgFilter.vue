@@ -4,7 +4,7 @@
     <div class="filter-range">
       <input 
         type="range" 
-        min="0" 
+        min="-100" 
         max="100" 
         v-model=rangeValue
         :style="{backgroundSize: backgroundSize}"
@@ -35,14 +35,14 @@ export default {
   },
   computed: {
     backgroundSize: function() {
-      return `${this.rangeValue * 100 / 100}% 100%`;
+      return `${((parseInt(this.rangeValue) + 100) / 200) * 100}% 100%`;
     }
   },
   watch: {
     rangeValue: _.debounce(function (val) {
       this.rangeValue = val;
       this.changeHandler(val);
-    }, 100),
+    }, 50),
     defaultRange: function(newVal) {
       this.rangeValue = newVal;
     }

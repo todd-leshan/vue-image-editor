@@ -66,8 +66,8 @@ export default {
       const input = event.target;
       const file = input.files[0];
       vm.ctx.clearRect(0, 0, vm.canvas.width, vm.canvas.height);
-      vm.updateBrightness(50);
-      vm.updateContrast(50);
+      vm.updateBrightness(0);
+      vm.updateContrast(0);
       vm.updateFilterStatus('disabled');
       vm.originalImageData = null;
 
@@ -107,8 +107,10 @@ export default {
 
       const data = [...vm.originalImageData];
 
-      const contrastScaled = 255 * 2 / 100 * contrast - 255;
-      const brightnessScaled = 255 * 2 / 100 * brightness - 255;
+      // const contrastScaled = 255 * 2 / 100 * contrast - 255;
+      // const brightnessScaled = 255 * 2 / 100 * brightness - 255;
+      const contrastScaled = contrast * 2.55;
+      const brightnessScaled = brightness * 2.55;
       const factor = (259 * (contrastScaled + 255)) / (255 * (259 - contrastScaled)); 
       for(let i=0;i<data.length;i+=4) {
         data[i]   = vm.applyFiltersOnPixelColor(data[i], factor, brightnessScaled);
