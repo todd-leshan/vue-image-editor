@@ -176,10 +176,17 @@ main {
   line-height: 1.39;
 }
 
+canvas,
+.container--upload {
+  border: solid 1px $mischka;
+}
+
 canvas {
+  box-sizing: border-box;
   display: block;
   width: 100%;
   height: auto;
+  border-bottom: none;
   border-top-right-radius: $border-radius;
   border-top-left-radius: $border-radius;
   background-color: $mischka;
@@ -187,7 +194,6 @@ canvas {
 
 .container--upload {
   padding: 18px 9px 2px 7px;
-  border: solid 1px $mischka;
   border-top: none;
   border-bottom-right-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
