@@ -124,6 +124,7 @@ export default {
 
       const newImageData = new ImageData(new Uint8ClampedArray(data), vm.canvas.width, vm.canvas.height);
 
+      // return newImageData;
       vm.ctx.putImageData(newImageData, 0, 0);
     },
     applyFiltersOnPixelColor(val, contrastFactor, brightness) {
