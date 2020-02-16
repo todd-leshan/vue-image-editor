@@ -1,5 +1,9 @@
 # image-editor
 
+You can try it out on this link https://todd-leshan.github.io/vue-image-editor/
+
+The page is responsive. Since the assignment does not provide the desktop & tablet view, I have made some adjustments based on my personal preference. 
+
 ## Project setup
 ```
 npm install
