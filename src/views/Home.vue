@@ -3,7 +3,7 @@
     <Header 
       title='Brightness & Contrast Developer Test'
       subtitle='01 Jun, 2018 - 31 Dec, 2019'
-      avatar='sample-avatar.png'
+      avatar='avatar-minion.jpg'
     />
     <Main></Main>
   </div>

@@ -21,7 +21,15 @@
 </template>
 
 <script>
+import get from 'lodash/get';
 import { mapGetters, mapActions } from 'vuex';
+
+const ALLOWED_IMAGE_TYPE = [
+  'image/jpeg',
+  'image/png',
+];
+
+const DEFAULT_RANGE_VALUE = 0;
 
 export default {
   name: 'ImgUpload',
@@ -64,54 +72,50 @@ export default {
     getImage: function (event) {
       const vm = this;
       const input = event.target;
-      const file = input.files[0];
+      const file = get(input, 'files[0]');
+
+      if (!file || !file.type || !ALLOWED_IMAGE_TYPE.includes(file.type)) {
+        return;
+      }
+
       vm.ctx.clearRect(0, 0, vm.canvas.width, vm.canvas.height);
-      vm.updateBrightness(0);
-      vm.updateContrast(0);
+      vm.updateBrightness(DEFAULT_RANGE_VALUE);
+      vm.updateContrast(DEFAULT_RANGE_VALUE);
       vm.updateFilterStatus('disabled');
       vm.originalImageData = null;
 
-      if (input.files && file) 
-      {
-        if(file['type'] != 'image/jpeg' && file['type'] != 'image/png') {
-          vm.updateFilterStatus('disabled');
-          return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          vm.img.src = e.target.result;
-        }
+      const reader = new FileReader();
 
-        reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        vm.img.src = e.target.result;
+      }
 
-        vm.img.onload = function() 
-        {
-          vm.imgName = `${file.name.substring(0, 15)} ...`;
-          vm.canvas.width = vm.img.width;
-          vm.canvas.height = vm.img.height; //need to figure out how to calculate canvas height
-          vm.ctx.drawImage(vm.img, 0, 0, vm.img.width, vm.img.height);
+      reader.readAsDataURL(file);
 
-          let imageData = vm.ctx.getImageData(0, 0, vm.canvas.width, vm.canvas.height);
+      vm.img.onload = () => {
+        vm.imgName = file.name;
+        vm.canvas.width = vm.img.width;
+        vm.canvas.height = vm.img.height; //need to figure out how to calculate canvas height
+        vm.ctx.drawImage(vm.img, 0, 0, vm.img.width, vm.img.height);
 
-          vm.originalImageData = [...imageData.data];
-          vm.updateFilterStatus('enabled');
-        }
+        const imageData = vm.ctx.getImageData(0, 0, vm.canvas.width, vm.canvas.height);
+
+        vm.originalImageData = [...imageData.data];
+        vm.updateFilterStatus('enabled');
       }
     },
     applyFilters(contrast, brightness) {
       const vm = this;
+
       if(vm.originalImageData === null) {
         return;
       }
 
       const data = [...vm.originalImageData];
-
-      // const contrastScaled = 255 * 2 / 100 * contrast - 255;
-      // const brightnessScaled = 255 * 2 / 100 * brightness - 255;
       const contrastScaled = contrast * 2.55;
       const brightnessScaled = brightness * 2.55;
-      const factor = (259 * (contrastScaled + 255)) / (255 * (259 - contrastScaled)); 
+      const factor = (259 * (contrastScaled + 255)) / (255 * (259 - contrastScaled));
+
       for(let i=0;i<data.length;i+=4) {
         data[i]   = vm.applyFiltersOnPixelColor(data[i], factor, brightnessScaled);
         data[i+1] = vm.applyFiltersOnPixelColor(data[i+1], factor, brightnessScaled);
@@ -119,6 +123,7 @@ export default {
       }
 
       const newImageData = new ImageData(new Uint8ClampedArray(data), vm.canvas.width, vm.canvas.height);
+
       vm.ctx.putImageData(newImageData, 0, 0);
     },
     applyFiltersOnPixelColor(val, contrastFactor, brightness) {

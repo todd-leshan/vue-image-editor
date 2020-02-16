@@ -16,7 +16,11 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import debounce from 'lodash/debounce';
+
+const SLIDER_DEBOUNCE_TIMEOUT = 50;
+const SLIDER_RANGE_SIZE = 200;
+const SLIDER_RANGE_OFFSET = SLIDER_RANGE_SIZE / 2;
 
 export default {
   name: "ImgFilter",
@@ -35,14 +39,14 @@ export default {
   },
   computed: {
     backgroundSize: function() {
-      return `${((parseInt(this.rangeValue) + 100) / 200) * 100}% 100%`;
+      return `${((parseInt(this.rangeValue) + SLIDER_RANGE_OFFSET) / SLIDER_RANGE_SIZE) * 100}% 100%`;
     }
   },
   watch: {
-    rangeValue: _.debounce(function (val) {
+    rangeValue: debounce(function (val) {
       this.rangeValue = val;
       this.changeHandler(val);
-    }, 50),
+    }, SLIDER_DEBOUNCE_TIMEOUT),
     defaultRange: function(newVal) {
       this.rangeValue = newVal;
     }

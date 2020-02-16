@@ -228,6 +228,10 @@ canvas {
 
     &:last-of-type {
       width: 147px;
+      padding-left: 5px;
+      padding-right: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       background-color: $white;
       color: $eucalyptus;
       border-left: none;
