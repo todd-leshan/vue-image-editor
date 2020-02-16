@@ -138,6 +138,11 @@ main {
     border-radius: $border-radius;
     appearance: none;
     outline: none;
+    opacity: 1;
+
+    &:disabled {
+      opacity: 0.5;
+    }
 
     &:hover:disabled,
     &:active:disabled {
