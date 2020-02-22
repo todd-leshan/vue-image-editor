@@ -18,7 +18,7 @@
 <script>
 import debounce from 'lodash/debounce';
 
-const SLIDER_DEBOUNCE_TIMEOUT = 50;
+const SLIDER_DEBOUNCE_TIMEOUT = 1;
 const SLIDER_RANGE_SIZE = 200;
 const SLIDER_RANGE_OFFSET = SLIDER_RANGE_SIZE / 2;
 
